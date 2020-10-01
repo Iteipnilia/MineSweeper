@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Minesweeper
+namespace minesweeper
 {
     struct BoardField
     {

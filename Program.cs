@@ -6,7 +6,10 @@ namespace minesweeper
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            //För att testa utskrift av minfältet
+            BoardField board = new BoardField(args);
+
+            board.DrawField();
         }
     }
 }

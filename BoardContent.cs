@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Resources;
 
-namespace Minesweeper
+namespace minesweeper
 {
 
     //Enum ska vara utanför struct???
