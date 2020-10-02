@@ -5,13 +5,13 @@ namespace minesweeper
     struct GameMineSweeper
     {
         private BoardField board;
-        bool quitGame;
+        private bool quitGame;
 
         //konstruktor här
 
-        private void UserInput()
-        {
-
+        private string UserCommand()
+        {  
+            return null;
         }
 
         private void RunGame()

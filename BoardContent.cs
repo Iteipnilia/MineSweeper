@@ -39,9 +39,31 @@ namespace minesweeper
             sweeped = false;
             symbol = (char)GameSymbols.SymbolDefault;
         }
-
-
+        
         public char Symbol => symbol;
+        public bool IsSweeped => sweeped;
+        public bool IsMine => mine;
+        public bool IsFlag => flag;
+
+        public bool GameOver
+        { 
+            set { }
+        }
+
+        public void IncrementneighbouringMines()
+        {
+
+        }
+
+        public bool TryFlag()
+        {
+            return true;
+        }
+
+         public bool TrySweep()
+        {
+            return true;
+        }
 
 
 
