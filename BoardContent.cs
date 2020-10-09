@@ -55,14 +55,50 @@ namespace minesweeper
 
         }
 
+        //UPPDATERAD
         public bool TryFlag()
         {
-            return true;
-        }
+            if(flag==true)
+            {
+                Console.WriteLine("Removing flag from position");
+                //flagcount--;
+                symbol = (char)GameSymbols.SymbolDefault;
+                return false;
+            }
+            else if(sweeped == true)
+            {
+                Console.WriteLine("Not allowed");
+                return false;
+            }
+            else
+            {
+                // flagcount++;
+                symbol = (char)GameSymbols.Flag;
+                return true;
+            }
+        } 
 
-         public bool TrySweep()
+        // UPPDATERAD
+        public bool TrySweep()
         {
-            return true;
+            if (!sweeped && !flag)
+            {
+                sweeped = true;
+                if (neighbouringMines == 0)
+                {
+                    symbol = (char)GameSymbols.EmptyNoNearMines;
+                }
+                else
+                {
+                    symbol = char.Parse(neighbouringMines.ToString());
+                }
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Not allowed");
+                return false;
+            }
         }
 
 
