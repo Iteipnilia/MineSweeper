@@ -45,17 +45,39 @@ namespace minesweeper
         public bool IsMine => mine;
         public bool IsFlag => flag;
 
-        public bool GameOver
-        { 
-            set { }
-        }
-
-        public void IncrementneighbouringMines()
+        private int NeighbouringMines
         {
-
+            get {return neighbouringMines;}
+            set { neighbouringMines= value;}
         }
 
-        //UPPDATERAD
+        // Öka räknaren av minor på intilliggande rutor med 1.
+        public void IncrementNeighbouringMines() // Stubbe
+        {
+            neighbouringMines += 1;
+        }
+
+        //SKRIVS UT VID GAME OVER
+        public bool GameOver
+        {
+            set 
+            { 
+                if (value)
+                {
+                    if (flag && mine){symbol = (char)GameOverSymbols.MineFlagged;}
+
+                    if (sweeped && mine){symbol = (char)GameOverSymbols.ExplodedMine;}
+
+                    if (mine && !sweeped){symbol = (char)GameOverSymbols.Mine;}
+
+                    if (flag && !mine) {symbol = (char)GameOverSymbols.FlaggedWrong;}
+                }
+            } 
+        }
+
+
+
+        //UPPDATERAD 10/10
         public bool TryFlag()
         {
             if(flag==true)
@@ -63,18 +85,18 @@ namespace minesweeper
                 Console.WriteLine("Removing flag from position");
                 //flagcount--;
                 symbol = (char)GameSymbols.SymbolDefault;
-                return false;
+                return  flag=false;
             }
             else if(sweeped == true)
             {
                 Console.WriteLine("Not allowed");
-                return false;
+                return false;//U
             }
             else
             {
                 // flagcount++;
                 symbol = (char)GameSymbols.Flag;
-                return true;
+                return flag=true;
             }
         } 
 
@@ -83,7 +105,6 @@ namespace minesweeper
         {
             if (!sweeped && !flag)
             {
-                sweeped = true;
                 if (neighbouringMines == 0)
                 {
                     symbol = (char)GameSymbols.EmptyNoNearMines;
@@ -92,7 +113,7 @@ namespace minesweeper
                 {
                     symbol = char.Parse(neighbouringMines.ToString());
                 }
-                return true;
+                return sweeped =true;
             }
             else
             {

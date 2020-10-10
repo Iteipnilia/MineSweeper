@@ -50,7 +50,7 @@ namespace minesweeper
 
                 if (command.Equals('f') || command.Equals('r'))
                 {
-                    if (!blank.Equals(' ')){Console.WriteLine("Syntax error");}
+                    if (!blank.Equals(' ')|| row > 9 || col > 9){Console.WriteLine("Syntax error");}
 
                     else
                     {
@@ -72,10 +72,7 @@ namespace minesweeper
                 string userInput = Console.ReadLine();
                 UserCommand(userInput.ToLower());
 
-            } while(quitGame !=true);
-           
-            //while(quit != true || Gameover || Winner)
-            // räkna flaggor??
+            } while(quitGame !=true );//|| board.GameOver !=true || board.PlayerWon !=true);//UPPDATERAD
         }
     }
 
