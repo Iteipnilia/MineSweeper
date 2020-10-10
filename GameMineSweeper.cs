@@ -7,8 +7,6 @@ namespace minesweeper
         private BoardField board;
         private bool quitGame;
 
-        //konstruktor här
-
         //konstruktor
         public GameMineSweeper(string[] args)
         {
@@ -31,55 +29,62 @@ namespace minesweeper
             }
             return (int)input;
         }
-        //UPPDATERAD
-        private void TryUserCommand(string input)
+        //UPPDATERAD IGEN
+        private void UserCommand(string input)
         {
-            char command = input[0];
-            char blank = input[1];
-            int col = ChangeLetterToNumber(input[2]);
-            int row = (int)Char.GetNumericValue(input[3]);
-
-            if (command.Equals('f') || command.Equals('r') || command.Equals('q'))
+            if (input.Length.Equals(1))
             {
-                if(!blank.Equals(' ')|| row>9 || col>9)
+                char command = input[0];
+                if(command.Equals('q'))
                 {
-                    Console.WriteLine("Syntax error");
+                    quitGame = true;
                 }
-                else
+                else { Console.WriteLine("Unknown command"); }
+            }
+            else if (input.Length.Equals(2)|| input.Length.Equals(3)) { Console.WriteLine("Syntax error"); }
+
+            else if (input.Length.Equals(4))
+            {
+                char command = input[0];
+                char blank = input[1];
+                int col = ChangeLetterToNumber(input[2]);
+                int row = (int)Char.GetNumericValue(input[3]);
+
+                if (command.Equals('f') || command.Equals('r'))
                 {
-                    if(command.Equals('f'))
+                    if (!blank.Equals(' '))
                     {
-                        board.FlagPostion(row, col);
-                    }
-                    else if(command.Equals('r'))
-                    {
-                        board.SweepPostion(row, col);
+                        Console.WriteLine("Syntax error");
                     }
                     else
                     {
-                        quitGame = true;
+                        if (command.Equals('f'))
+                        {
+                            board.FlagPostion(row, col);
+                        }
+                        else if (command.Equals('r'))
+                        {
+                            board.SweepPostion(row, col);
+                        }
                     }
                 }
+                else { Console.WriteLine("Unknown command"); }
             }
-            else
-            {
-                Console.WriteLine("Unknown command");
-            }
+            else { Console.WriteLine("Syntax error"); }
         }
 
-        private void RunGame()
+        public void RunGame()
         {
-            board.DrawField();
-            string userInput = Console.ReadLine();
-            TryUserCommand(userInput.ToLower());
+            do
+            {
+                board.DrawField();
+                string userInput = Console.ReadLine();
+                UserCommand(userInput.ToLower());
 
-            board.DrawField();
-
-            Console.ReadKey();
+            } while(quitGame !=true);
            
             //while(quit != true || Gameover || Winner)
             // räkna flaggor??
-
         }
     }
 
