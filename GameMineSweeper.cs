@@ -35,10 +35,8 @@ namespace minesweeper
             if (input.Length.Equals(1))
             {
                 char command = input[0];
-                if(command.Equals('q'))
-                {
-                    quitGame = true;
-                }
+
+                if(command.Equals('q')) {quitGame=true;}
                 else { Console.WriteLine("Unknown command"); }
             }
             else if (input.Length.Equals(2)|| input.Length.Equals(3)) { Console.WriteLine("Syntax error"); }
@@ -52,20 +50,13 @@ namespace minesweeper
 
                 if (command.Equals('f') || command.Equals('r'))
                 {
-                    if (!blank.Equals(' '))
-                    {
-                        Console.WriteLine("Syntax error");
-                    }
+                    if (!blank.Equals(' ')){Console.WriteLine("Syntax error");}
+
                     else
                     {
-                        if (command.Equals('f'))
-                        {
-                            board.FlagPostion(row, col);
-                        }
-                        else if (command.Equals('r'))
-                        {
-                            board.SweepPostion(row, col);
-                        }
+                        if (command.Equals('f')) {board.FlagPostion(row, col);}
+
+                        else if (command.Equals('r')){board.SweepPostion(row, col);}
                     }
                 }
                 else { Console.WriteLine("Unknown command"); }
