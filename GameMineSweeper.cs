@@ -30,6 +30,10 @@ namespace minesweeper
         }
         private void UserCommand(string input)
         {
+            if (Console.IsInputRedirected)
+            {
+                Console.WriteLine(input);
+            }
             if (input.Length.Equals(1))
             {
                 char command = input[0];
