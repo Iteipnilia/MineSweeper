@@ -6,10 +6,9 @@ namespace minesweeper
     {
         static void Main(string[] args)
         {
-            //För att testa utskrift av minfältet
-            BoardField board = new BoardField(args);
+            GameMineSweeper game = new GameMineSweeper(args);
 
-            board.DrawField();
+            game.RunGame();
         }
     }
 }
