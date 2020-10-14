@@ -1,0 +1,19 @@
+r e4
+r e4
+f e4
+r ee
+r 44
+f ee
+f e4
+r k9
+f k9
+f
+r
+b
+
+!
+a e5
+a k9
+f e6 r
+kjas;lfja;sldfkja;lskdjf;alskjdf;lakjsfd;lakjsdf;lakjsfd;lkja;lsfdkja;lksjdf;lakjf;lkajf;akja;lksfja;kjf;akjfs;lakjf;kja;flkja;kljfa;lkjsf;lkajf;alskjdf
+q
