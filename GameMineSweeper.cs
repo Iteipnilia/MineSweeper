@@ -71,9 +71,30 @@ namespace minesweeper
                 board.DrawField();
                 string userInput = Console.ReadLine();
                 UserCommand(userInput.ToLower());
-
-            } while(quitGame !=true );//|| board.GameOver !=true || board.PlayerWon !=true);//UPPDATERAD
+                if (board.PlayerWon)
+                {
+                    board.DrawField();
+                    Console.WriteLine("GOOD JOB");
+                    Console.ReadLine();
+                    System.Environment.Exit(0);
+                }
+                if (board.GameOver)
+                {
+                    board.DrawField();
+                    Console.WriteLine("GAME OVER");
+                    Console.ReadLine();
+                    System.Environment.Exit(1);
+                }
+                if (quitGame)
+                {
+                    Console.ReadLine();
+                    System.Environment.Exit(2);
+                }
+            } 
+            while (!(quitGame || board.PlayerWon || board.GameOver));
         }
+
+
     }
 
 }

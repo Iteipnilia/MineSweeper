@@ -3,14 +3,11 @@ using System.Resources;
 
 namespace minesweeper
 {
-
-    //Enum ska vara utanför struct???
     enum GameSymbols
     {
         SymbolDefault = 'X',
         Flag = 'F',
         EmptyNoNearMines = '.'
-
     }
 
     enum GameOverSymbols
@@ -18,23 +15,19 @@ namespace minesweeper
         ExplodedMine = 'M',
         Mine = 'm',
         MineFlagged = 'w',
-        FlaggedWrong = 'Ⅎ'
-
+        FlaggedWrong = 'Ⅎ' 
     }
     struct BoardContent
     {
-
-        // Om en mina finns i närheten ska det skrivas ut i antalet som finns, 1-8
         private int neighbouringMines;
         private bool mine;
         private bool flag;
         private bool sweeped;
         private char symbol;
-
         public BoardContent(bool boobytrap)
         {
             neighbouringMines = 0;
-            mine = false;
+            mine = boobytrap;
             flag = false;
             sweeped = false;
             symbol = (char)GameSymbols.SymbolDefault;
@@ -45,7 +38,7 @@ namespace minesweeper
         public bool IsMine => mine;
         public bool IsFlag => flag;
 
-        private int NeighbouringMines
+        public int NeighbouringMines
         {
             get {return neighbouringMines;}
             set { neighbouringMines= value;}
@@ -58,21 +51,17 @@ namespace minesweeper
         }
 
         //SKRIVS UT VID GAME OVER
-        public bool GameOver
+        public char GameOver()
         {
-            set 
-            { 
-                if (value)
-                {
-                    if (flag && mine){symbol = (char)GameOverSymbols.MineFlagged;}
+            if (flag && mine) { return symbol = (char)GameOverSymbols.MineFlagged; }
 
-                    if (sweeped && mine){symbol = (char)GameOverSymbols.ExplodedMine;}
+            if (sweeped && mine) { return symbol = (char)GameOverSymbols.ExplodedMine; }
 
-                    if (mine && !sweeped){symbol = (char)GameOverSymbols.Mine;}
+            if (mine && !sweeped) { return symbol = (char)GameOverSymbols.Mine; }
 
-                    if (flag && !mine) {symbol = (char)GameOverSymbols.FlaggedWrong;}
-                }
-            } 
+            if (flag && !mine) { return symbol = (char)GameOverSymbols.FlaggedWrong; }
+
+            return symbol = (char)GameSymbols.EmptyNoNearMines;
         }
 
 
@@ -83,7 +72,6 @@ namespace minesweeper
             if(flag==true)
             {
                 Console.WriteLine("Removing flag from position");
-                //flagcount--;
                 symbol = (char)GameSymbols.SymbolDefault;
                 return  flag=false;
             }
@@ -94,7 +82,6 @@ namespace minesweeper
             }
             else
             {
-                // flagcount++;
                 symbol = (char)GameSymbols.Flag;
                 return flag=true;
             }
@@ -107,7 +94,7 @@ namespace minesweeper
             {
                 if (neighbouringMines == 0)
                 {
-                    symbol = (char)GameSymbols.EmptyNoNearMines;
+                     symbol = (char)GameSymbols.EmptyNoNearMines; 
                 }
                 else
                 {

@@ -4,6 +4,7 @@ namespace minesweeper
 {
     class Program
     {
+
         static void Main(string[] args)
         {
             //För att testa utskrift av minfältet
@@ -11,7 +12,6 @@ namespace minesweeper
             GameMineSweeper game = new GameMineSweeper(args);
 
             game.RunGame();
-
         }
     }
 }

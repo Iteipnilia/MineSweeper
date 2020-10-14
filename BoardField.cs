@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography;
 
 namespace minesweeper
 {
@@ -7,17 +8,16 @@ namespace minesweeper
         private BoardContent[,] fieldBoard;
         private int flagcount;
         private int sweepCount;
-        // Läggas till??
-        private bool playerWon;
         private bool gameOver;
+        private bool playerWon;
 
         //konstruktor
-        public BoardField(string[] args)   //(BoardContent initField)
+        public BoardField(string[] args)
         {
             flagcount=0;
             sweepCount=0;
-            playerWon=false;
-            gameOver=false;
+            gameOver = false;
+            playerWon = false;
 
             fieldBoard = new BoardContent[10, 10];
             Helper.Initialize(args);
@@ -30,11 +30,31 @@ namespace minesweeper
                     fieldBoard[row, col] = new BoardContent(boobyTrap);
                 }
             }
+            // räknar närliggande minor
+            for (int row = 0; row < 10; ++row)
+            {
+                for (int col = 0; col < 10; ++col)
+                {
+                    for (int r = row - 1; r <= row + 1; r++)
+                    {
+                        for (int c = col - 1; c <= col + 1; c++)
+                        {
+                            if (r >= 0 && r < 10 && c >= 0 && c < 10)
+                            {
+                                if (fieldBoard[r, c].IsMine == true)
+                                {
+                                    fieldBoard[row, col].IncrementNeighbouringMines();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
         }
 
         // Enbart läsbar egenskap som säger som spelaren har vunnit spelet.
-        public bool PlayerWon => playerWon; // uppdaterad
+        public bool PlayerWon =>playerWon; // uppdaterad
 
         // Enbart läsbar egenskap som säger om spelaren har förlorat.
         public bool GameOver => gameOver; // uppdaterad
@@ -53,14 +73,39 @@ namespace minesweeper
             }
         }
 
-        //RÖJ en position (UPPDATERAD) game over
+        //RÖJ en position
         public bool SweepPostion(int row, int col)
         {
-            if(fieldBoard[row,col].IsMine==true)
+
+            if (fieldBoard[row, col].IsMine == true) { gameOver = true; }
+
+            if (fieldBoard[row, col].NeighbouringMines == 0)
             {
-                return gameOver=true;
+                SweepNearby(row, col);
             }
-            else {return fieldBoard[row, col].TrySweep();}
+
+            else { fieldBoard[row, col].TrySweep(); }
+            return true;          
+        }
+
+        public void SweepNearby(int row, int col)
+        {
+            for (int r = row - 1; r <= row + 1; r++)
+            {
+                for (int c = col - 1; c <= col + 1; c++)
+                {
+                    if (r >= 0 && r < 10 && c >= 0 && c < 10)
+                    {
+                        if (fieldBoard[r, c].IsSweeped != true)
+                        { 
+                            fieldBoard[r, c].TrySweep();
+                            
+                            if (fieldBoard[r, c].NeighbouringMines == 0) { SweepNearby(r, c); }
+                        }
+
+                    }
+                }
+            }
         }
 
         // utskrift av 2D array
@@ -69,6 +114,7 @@ namespace minesweeper
         {
             int countflag=0;
             int countsweep=0;
+
             Console.WriteLine("     A  B  C  D  E  F  G  H  I  J ");
             Console.WriteLine("   +------------------------------");
             for (int row = 0; row < 10; row++)
@@ -76,17 +122,24 @@ namespace minesweeper
                 Console.Write($" {row} |");
                 for (int col = 0; col < 10; col++)
                 {
-                    Console.Write(" " + fieldBoard[row,col].Symbol + " "); // skriver ut symbol för default
-                    //UPPDATERAT RÄKNAR FLAGGOR OCH RÖJNING
-                    if(fieldBoard[row,col].IsFlag==true){countflag++;}
-                    if(fieldBoard[row,col].IsSweeped==true){countsweep++;}
+                    if(gameOver== true) {Console.Write(" " + fieldBoard[row, col].GameOver() + " "); }
+
+                    else
+                    {
+                        Console.Write(" " + fieldBoard[row, col].Symbol + " ");
+
+                        //UPPDATERAT RÄKNAR FLAGGOR OCH RÖJNING
+                        if (fieldBoard[row, col].IsFlag == true) { countflag++; }
+                        if (fieldBoard[row, col].IsSweeped == true) { countsweep++; }
+                    }
+
                 }
                 Console.WriteLine();
             }
             flagcount=countflag;
             sweepCount=countsweep;
+            if (sweepCount == 90) { playerWon = true; }// finns bättre sätt??
             Console.Write("\n >");
-            Console.WriteLine($"\nFlaggor: {flagcount} och Röjda: {sweepCount}");
         }
 
 
