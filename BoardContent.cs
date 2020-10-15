@@ -44,7 +44,7 @@ namespace minesweeper
         }
 
         // Öka räknaren av minor på intilliggande rutor med 1.
-        public void IncrementNeighbouringMines() // Stubbe
+        public void IncrementNeighbouringMines()
         {
             neighbouringMines += 1;
         }
@@ -65,9 +65,6 @@ namespace minesweeper
             return symbol = (char)GameSymbols.EmptyNoNearMines;
         }
 
-
-
-        //UPPDATERAD RETURN FALSE 
         public bool TryFlag()
         {
             if(flag==true)
@@ -75,12 +72,12 @@ namespace minesweeper
                 Console.WriteLine("Removing flag from position");
                 symbol = (char)GameSymbols.SymbolDefault;
                 flag=false;
-                return true;  //flag=false;
+                return true;
             }
             else if(sweeped == true)
             {
                 Console.WriteLine("Not allowed");
-                return false;//U
+                return false;
             }
             else
             {
@@ -89,8 +86,6 @@ namespace minesweeper
                 return true;
             }
         } 
-
-        // UPPDATERAD
 
          public bool TrySweep()
         {

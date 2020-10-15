@@ -54,9 +54,9 @@ namespace minesweeper
         }
 
         //==================================
-        // PROPERTYS: GAME OVER & PLAYER WON
+        // PROPERTIES: GAME OVER & PLAYER WON
         //==================================
-        public bool PlayerWon =>playerWon; // uppdaterad
+        public bool PlayerWon =>playerWon;
         public bool GameOver => gameOver;
 
         //==========================
@@ -83,7 +83,7 @@ namespace minesweeper
 
             if (fieldBoard[row, col].IsMine == true && fieldBoard[row,col].IsFlag !=true ) { gameOver = true; }
 
-            if (fieldBoard[row, col].NeighbouringMines == 0 && !fieldBoard[row, col].IsSweeped)//FIXAT NOT ALLOWED?
+            if (fieldBoard[row, col].NeighbouringMines == 0 && !fieldBoard[row, col].IsSweeped)
             {
                 SweepNearby(row, col);
             }
@@ -104,7 +104,7 @@ namespace minesweeper
                 {
                     if (r >= 0 && r < 10 && c >= 0 && c < 10)
                     {
-                        if (fieldBoard[r, c].IsSweeped != true && fieldBoard[r,c].IsFlag !=true)///FUNKA
+                        if (fieldBoard[r, c].IsSweeped != true && fieldBoard[r,c].IsFlag !=true)
                         { 
                             fieldBoard[r, c].TrySweep();
                             
@@ -137,7 +137,7 @@ namespace minesweeper
                     {
                         Console.Write(" " + fieldBoard[row, col].Symbol + "");
 
-                        //UPPDATERAT RÄKNAR FLAGGOR OCH RÖJNING
+                        //RÄKNAR FLAGGOR OCH RÖJNING
                         if (fieldBoard[row, col].IsFlag == true) { countflag++; }
                         if (fieldBoard[row, col].IsSweeped == true) { countsweep++; }
                     }
