@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace minesweeper
 {
@@ -7,8 +8,7 @@ namespace minesweeper
 
         static void Main(string[] args)
         {
-            //För att testa utskrift av minfältet
-            //UPPDATERAT
+            Console.OutputEncoding = Encoding.UTF8;
             GameMineSweeper game = new GameMineSweeper(args);
 
             game.RunGame();
