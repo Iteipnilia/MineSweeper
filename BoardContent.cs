@@ -60,19 +60,22 @@ namespace minesweeper
 
             if (flag && !mine) { return symbol = (char)GameOverSymbols.FlaggedWrong; }
 
+            if (!(flag || mine) && neighbouringMines >= 1) { return symbol = char.Parse(neighbouringMines.ToString());}
+
             return symbol = (char)GameSymbols.EmptyNoNearMines;
         }
 
 
 
-        //UPPDATERAD 10/10
+        //UPPDATERAD RETURN FALSE 
         public bool TryFlag()
         {
             if(flag==true)
             {
                 Console.WriteLine("Removing flag from position");
                 symbol = (char)GameSymbols.SymbolDefault;
-                return  flag=false;
+                flag=false;
+                return true;  //flag=false;
             }
             else if(sweeped == true)
             {
@@ -81,25 +84,28 @@ namespace minesweeper
             }
             else
             {
-                symbol = (char)GameSymbols.Flag;
-                return flag=true;
+                symbol = (char)GameSymbols.Flag; 
+                flag=true;
+                return true;
             }
         } 
 
         // UPPDATERAD
-        public bool TrySweep()
+
+         public bool TrySweep()
         {
             if (!sweeped && !flag)
             {
                 if (neighbouringMines == 0)
                 {
-                     symbol = (char)GameSymbols.EmptyNoNearMines; 
+                    symbol = (char)GameSymbols.EmptyNoNearMines;
                 }
                 else
                 {
                     symbol = char.Parse(neighbouringMines.ToString());
                 }
-                return sweeped =true;
+                sweeped =true;
+                return true;
             }
             else
             {

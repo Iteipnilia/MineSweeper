@@ -6,7 +6,7 @@ namespace minesweeper
     {
         private BoardContent[,] fieldBoard;
         private int flagcount;
-        private int sweepCount;
+        private int sweepcount;
         private bool gameOver;
         private bool playerWon;
 
@@ -14,13 +14,14 @@ namespace minesweeper
         public BoardField(string[] args)
         {
             flagcount=0;
-            sweepCount=0;
+            sweepcount=0;
             gameOver = false;
             playerWon = false;
 
             fieldBoard = new BoardContent[10, 10];
             Helper.Initialize(args);
 
+            //Fills the board with mines
             for (int row = 0; row < 10; row++)
             {
                 for (int col = 0; col < 10; col++)
@@ -29,7 +30,7 @@ namespace minesweeper
                     fieldBoard[row, col] = new BoardContent(boobyTrap);
                 }
             }
-            // räknar närliggande minor
+            // Counts nearby mines for each position
             for (int row = 0; row < 10; ++row)
             {
                 for (int col = 0; col < 10; ++col)
@@ -52,16 +53,18 @@ namespace minesweeper
 
         }
 
-        // Enbart läsbar egenskap som säger som spelaren har vunnit spelet.
+        //==================================
+        // PROPERTYS: GAME OVER & PLAYER WON
+        //==================================
         public bool PlayerWon =>playerWon; // uppdaterad
+        public bool GameOver => gameOver;
 
-        // Enbart läsbar egenskap som säger om spelaren har förlorat.
-        public bool GameOver => gameOver; // uppdaterad
-
-        //Flagga en position (UPPDATERAD)
+        //==========================
+        // FLAG A POSITION
+        //==========================
         public bool FlagPostion(int row, int col)
         {
-            if (flagcount>=25)// ska  vara större eller lika med 25
+            if (flagcount>=25 && !fieldBoard[row, col].IsFlag)
             {
                 Console.WriteLine("Not allowed");
                 return false;
@@ -72,21 +75,27 @@ namespace minesweeper
             }
         }
 
-        //RÖJ en position
+        //=======================
+        //SWEEP A POSITION
+        //=======================
         public bool SweepPostion(int row, int col)
         {
 
-            if (fieldBoard[row, col].IsMine == true) { gameOver = true; }
+            if (fieldBoard[row, col].IsMine == true && fieldBoard[row,col].IsFlag !=true ) { gameOver = true; }
 
-            if (fieldBoard[row, col].NeighbouringMines == 0)
+            if (fieldBoard[row, col].NeighbouringMines == 0 && !fieldBoard[row, col].IsSweeped)//FIXAT NOT ALLOWED?
             {
                 SweepNearby(row, col);
             }
 
-            else { fieldBoard[row, col].TrySweep(); }
+            else { return fieldBoard[row, col].TrySweep(); }
             return true;          
         }
 
+        //====================================
+        // METHOD FOR SWEEPING NEARBY POSTIONS
+        // (if there are no nearby mines)
+        //====================================
         public void SweepNearby(int row, int col)
         {
             for (int r = row - 1; r <= row + 1; r++)
@@ -95,7 +104,7 @@ namespace minesweeper
                 {
                     if (r >= 0 && r < 10 && c >= 0 && c < 10)
                     {
-                        if (fieldBoard[r, c].IsSweeped != true)
+                        if (fieldBoard[r, c].IsSweeped != true && fieldBoard[r,c].IsFlag !=true)///FUNKA
                         { 
                             fieldBoard[r, c].TrySweep();
                             
@@ -107,25 +116,26 @@ namespace minesweeper
             }
         }
 
-        // utskrift av 2D array
-        // UPPDATERAD (DESIGN)
+        //=================================
+        // DRAWFIELD: Prints out a 2D array
+        //=================================
         public void DrawField()
         {
             int countflag=0;
             int countsweep=0;
 
-            Console.WriteLine("     A  B  C  D  E  F  G  H  I  J ");
-            Console.WriteLine("   +------------------------------");
+            Console.WriteLine();
+            Console.WriteLine("     A B C D E F G H I J");
+            Console.WriteLine("   +--------------------");
             for (int row = 0; row < 10; row++)
             {
                 Console.Write($" {row} |");
                 for (int col = 0; col < 10; col++)
                 {
-                    if(gameOver== true) {Console.Write(" " + fieldBoard[row, col].GameOver() + " "); }
-
+                    if(gameOver== true) {Console.Write(" " + fieldBoard[row, col].GameOver() + ""); }
                     else
                     {
-                        Console.Write(" " + fieldBoard[row, col].Symbol + " ");
+                        Console.Write(" " + fieldBoard[row, col].Symbol + "");
 
                         //UPPDATERAT RÄKNAR FLAGGOR OCH RÖJNING
                         if (fieldBoard[row, col].IsFlag == true) { countflag++; }
@@ -136,9 +146,8 @@ namespace minesweeper
                 Console.WriteLine();
             }
             flagcount=countflag;
-            sweepCount=countsweep;
-            if (sweepCount == 90) { playerWon = true; }// finns bättre sätt??
-            Console.Write("\n >");
+            sweepcount=countsweep;
+            if(sweepcount==89){playerWon=true;}
         }
 
 

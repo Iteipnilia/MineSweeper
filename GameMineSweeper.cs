@@ -6,14 +6,24 @@ namespace minesweeper
     {
         private BoardField board;
         private bool quitGame;
+        private string userInput;
+        private bool iscommandtrue;
 
+        //=================
+        //konstruktor
+        //=================
         public GameMineSweeper(string[] args)
         {
+            iscommandtrue=false;
+            userInput="";
             board = new BoardField(args);
             quitGame = false;
+            
         }
 
-        //Changes a letter to a number
+        //==================================
+        //Changes a char letter to a number
+        //==================================
         private int ChangeLetterToNumber(char input)
         {
             // A-J == 0-9, a-j == 0-9
@@ -28,7 +38,11 @@ namespace minesweeper
             }
             return (int)input;
         }
-        private void UserCommand(string input)
+
+        //================================
+        //USERCOMMAND
+        //================================
+        private bool UserCommand(string input)
         {
             if (Console.IsInputRedirected)
             {
@@ -38,10 +52,11 @@ namespace minesweeper
             {
                 char command = input[0];
 
-                if(command.Equals('q')) {quitGame=true;}
-                else { Console.WriteLine("Unknown command"); }
+                if(command.Equals('q')) { quitGame=true; return true;}
+                if (command >= 'a' && command <= 'ö') { Console.WriteLine("Unknown command"); return false; }
+                else { Console.WriteLine("Syntax error"); return false; }
             }
-            else if (input.Length.Equals(2)|| input.Length.Equals(3)) { Console.WriteLine("Syntax error"); }
+            else if (input.Length.Equals(2)|| input.Length.Equals(3)) { Console.WriteLine("Syntax error"); return false; }
 
             else if (input.Length.Equals(4))
             {
@@ -50,35 +65,43 @@ namespace minesweeper
                 int col = ChangeLetterToNumber(input[2]);
                 int row = (int)Char.GetNumericValue(input[3]);
 
-                if (command.Equals('f') || command.Equals('r'))
                 {
-                    if (!blank.Equals(' ')|| row > 9 || col > 9){Console.WriteLine("Syntax error");}
+                    if (!blank.Equals(' ')|| row > 9|| row < 0 || col > 9){Console.WriteLine("Syntax error"); return false;}
 
                     else
                     {
-                        if (command.Equals('f')) {board.FlagPostion(row, col);}
+                        if (command.Equals('f')) {return board.FlagPostion(row, col);}
 
-                        else if (command.Equals('r')){board.SweepPostion(row, col);}
+                        else if (command.Equals('r')){return board.SweepPostion(row, col);}
+
+                        else { Console.WriteLine("Unknown command"); return false; }
                     }
                 }
-                else { Console.WriteLine("Unknown command"); }
             }
-            else { Console.WriteLine("Syntax error"); }
+            else { Console.WriteLine("Syntax error"); return false;}
         }
 
+        //==============
+        //RUN GAME
+        //==============
         public void RunGame()
         {
             do
             {
                 board.DrawField();
-                string userInput = Console.ReadLine();
-                UserCommand(userInput.ToLower());
+                do
+                {
+                    Console.Write("\n >");
+                    userInput = Console.ReadLine();
+                    iscommandtrue=UserCommand(userInput.ToLower());
+                }
+                while(iscommandtrue ==false);
 
                 if (board.PlayerWon)
                 {
                     board.DrawField();
-                    Console.WriteLine("GOOD JOB");
-                    Console.ReadLine();
+                    Console.WriteLine("WELL DONE!");
+                    Console.Read();
                     System.Environment.Exit(0);
                 }
 
@@ -86,13 +109,13 @@ namespace minesweeper
                 {
                     board.DrawField();
                     Console.WriteLine("GAME OVER");
-                    Console.ReadLine();
+                    Console.Read();
                     System.Environment.Exit(1);
                 }
                 if (quitGame)
 
                 {
-                    Console.ReadLine();
+                    Console.Read();
                     System.Environment.Exit(2);
                 }
 
