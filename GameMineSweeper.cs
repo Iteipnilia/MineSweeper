@@ -101,28 +101,32 @@ namespace minesweeper
                     iscommandtrue=UserCommand(userInput.ToLower());
                 }
                 while(iscommandtrue ==false);
-                
+
                 if (board.PlayerWon)
                 {
                     board.DrawField();
-                    Console.WriteLine("GOOD JOB");
-                    Console.ReadLine();
+                    Console.WriteLine("WELL DONE!");
+                    Console.Read();
                     System.Environment.Exit(0);
                 }
+
                 if (board.GameOver)
                 {
                     board.DrawField();
                     Console.WriteLine("GAME OVER");
-                    Console.ReadLine();
+                    Console.Read();
                     System.Environment.Exit(1);
                 }
                 if (quitGame)
+
                 {
-                    Console.ReadLine();
+                    Console.Read();
                     System.Environment.Exit(2);
                 }
+
             } 
             while (!(quitGame || board.PlayerWon || board.GameOver));
         }
     }
+
 }

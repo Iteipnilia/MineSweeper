@@ -55,9 +55,16 @@ namespace minesweeper
             }
         }
 
+<<<<<<< HEAD
         //====================================
         // PROPERTIES: GAME OVER & PLAYER WON
         //====================================
+=======
+        //==================================
+        // PROPERTIES: GAME OVER & PLAYER WON
+        //==================================
+        public bool PlayerWon =>playerWon;
+>>>>>>> 76f965a429261258e424a802edcf5785a36cdb03
         public bool GameOver => gameOver;
         public bool PlayerWon => playerWon;
 
@@ -66,7 +73,11 @@ namespace minesweeper
         //==========================
         public bool FlagPostion(int row, int col)
         {
+<<<<<<< HEAD
             if (flagcount>=25 && !boardfield[row, col].IsFlag)
+=======
+            if (flagcount>=25 && !fieldBoard[row, col].IsFlag)
+>>>>>>> 76f965a429261258e424a802edcf5785a36cdb03
             {
                 Console.WriteLine("Not allowed");
                 return false;
@@ -84,7 +95,13 @@ namespace minesweeper
         {
             if (boardfield[row, col].IsMine == true && boardfield[row,col].IsFlag !=true ) { gameOver = true; }
 
+<<<<<<< HEAD
             if (boardfield[row, col].NeighbouringMines == 0 && !boardfield[row, col].IsSweeped)
+=======
+            if (fieldBoard[row, col].IsMine == true && fieldBoard[row,col].IsFlag !=true ) { gameOver = true; }
+
+            if (fieldBoard[row, col].NeighbouringMines == 0 && !fieldBoard[row, col].IsSweeped)
+>>>>>>> 76f965a429261258e424a802edcf5785a36cdb03
             {
                 SweepNearby(row, col);
             }
@@ -105,7 +122,11 @@ namespace minesweeper
                 {
                     if (r >= 0 && r < 10 && c >= 0 && c < 10)
                     {
+<<<<<<< HEAD
                         if (boardfield[r, c].IsSweeped != true && boardfield[r,c].IsFlag !=true)
+=======
+                        if (fieldBoard[r, c].IsSweeped != true && fieldBoard[r,c].IsFlag !=true)
+>>>>>>> 76f965a429261258e424a802edcf5785a36cdb03
                         { 
                             boardfield[r, c].TrySweep();
                             
@@ -132,6 +153,7 @@ namespace minesweeper
                 Console.Write($" {row} |");
                 for (int col = 0; col < 10; col++)
                 {
+<<<<<<< HEAD
                     if(gameOver== true) {Console.Write(" " + boardfield[row, col].GameOver() + ""); }
                     else
                     {
@@ -140,7 +162,18 @@ namespace minesweeper
                         // Counting flags and sweeped positions
                         if (boardfield[row, col].IsFlag == true) { countflag++; }
                         if (boardfield[row, col].IsSweeped == true) { countsweep++; }
+=======
+                    if(gameOver== true) {Console.Write(" " + fieldBoard[row, col].GameOver() + ""); }
+                    else
+                    {
+                        Console.Write(" " + fieldBoard[row, col].Symbol + "");
+
+                        //RÄKNAR FLAGGOR OCH RÖJNING
+                        if (fieldBoard[row, col].IsFlag == true) { countflag++; }
+                        if (fieldBoard[row, col].IsSweeped == true) { countsweep++; }
+>>>>>>> 76f965a429261258e424a802edcf5785a36cdb03
                     }
+
                 }
                 Console.WriteLine();
             }

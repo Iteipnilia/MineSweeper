@@ -54,9 +54,13 @@ namespace minesweeper
             set { neighbouringMines= value;}
         }
 
+<<<<<<< HEAD
         //=============================
         // CALCULATOR FOR NEARBY MINES
         //=============================
+=======
+        // Öka räknaren av minor på intilliggande rutor med 1.
+>>>>>>> 76f965a429261258e424a802edcf5785a36cdb03
         public void IncrementNeighbouringMines()
         {
             neighbouringMines += 1;
@@ -80,10 +84,13 @@ namespace minesweeper
             return symbol = (char)GameSymbols.EmptyNoNearMines;
         }
 
+<<<<<<< HEAD
         //======================================
         // TRYFLAG: Adds or removes flag from
         // postion depending on conditions
         //======================================
+=======
+>>>>>>> 76f965a429261258e424a802edcf5785a36cdb03
         public bool TryFlag()
         {
             if(flag==true)
@@ -106,10 +113,13 @@ namespace minesweeper
             }
         } 
 
+<<<<<<< HEAD
         //=========================================
         // TRYSWEEP: checks if sweeping is allowed
         // Sweepes position if true
         //=========================================
+=======
+>>>>>>> 76f965a429261258e424a802edcf5785a36cdb03
          public bool TrySweep()
         {
             if (!sweeped && !flag)
