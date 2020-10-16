@@ -4,13 +4,14 @@ namespace minesweeper
 {
     struct GameMineSweeper
     {
+        // FIELDS
         private BoardField board;
         private bool quitGame;
         private string userInput;
         private bool iscommandtrue;
 
         //=================
-        //konstruktor
+        // CONSTRUCTOR
         //=================
         public GameMineSweeper(string[] args)
         {
@@ -22,7 +23,7 @@ namespace minesweeper
         }
 
         //==================================
-        //Changes a char letter to a number
+        // Changes a char letter to a number
         //==================================
         private int ChangeLetterToNumber(char input)
         {
@@ -40,16 +41,24 @@ namespace minesweeper
         }
 
         //================================
-        //USERCOMMAND
+        // USERCOMMAND: 
+        // Tests if usercommand is correct.
+        // Returns a value and passes 
+        // command on to correct method
         //================================
         private bool UserCommand(string input)
         {
+            if (Console.IsInputRedirected)
+            {
+                Console.WriteLine(input);
+            }
             if (input.Length.Equals(1))
             {
                 char command = input[0];
 
                 if(command.Equals('q')) { quitGame=true; return true;}
-                else { Console.WriteLine("Unknown command"); return false; }
+                if (command >= 'a' && command <= 'ö') { Console.WriteLine("Unknown command"); return false; }
+                else { Console.WriteLine("Syntax error"); return false; }
             }
             else if (input.Length.Equals(2)|| input.Length.Equals(3)) { Console.WriteLine("Syntax error"); return false; }
 
@@ -60,7 +69,6 @@ namespace minesweeper
                 int col = ChangeLetterToNumber(input[2]);
                 int row = (int)Char.GetNumericValue(input[3]);
 
-                if (command.Equals('f') || command.Equals('r'))
                 {
                     if (!blank.Equals(' ')|| row > 9|| row < 0 || col > 9){Console.WriteLine("Syntax error"); return false;}
 
@@ -69,21 +77,22 @@ namespace minesweeper
                         if (command.Equals('f')) {return board.FlagPostion(row, col);}
 
                         else if (command.Equals('r')){return board.SweepPostion(row, col);}
+
+                        else { Console.WriteLine("Unknown command"); return false; }
                     }
                 }
-                else { Console.WriteLine("Unknown command"); return false; }
             }
             else { Console.WriteLine("Syntax error"); return false;}
-            return false;
         }
 
         //==============
-        //RUN GAME
+        // RUN GAME
         //==============
         public void RunGame()
         {
             do
-            {
+            {           
+                    
                 board.DrawField();
                 do
                 {

@@ -4,13 +4,16 @@ namespace minesweeper
 {
     struct BoardField
     {
-        private BoardContent[,] fieldBoard;
+        // FIELDS
+        private BoardContent[,] boardfield;
         private int flagcount;
         private int sweepcount;
         private bool gameOver;
         private bool playerWon;
 
-        //konstruktor
+        //==============
+        // CONSTRUCTOR
+        //==============
         public BoardField(string[] args)
         {
             flagcount=0;
@@ -18,7 +21,7 @@ namespace minesweeper
             gameOver = false;
             playerWon = false;
 
-            fieldBoard = new BoardContent[10, 10];
+            boardfield = new BoardContent[10, 10];
             Helper.Initialize(args);
 
             //Fills the board with mines
@@ -27,10 +30,10 @@ namespace minesweeper
                 for (int col = 0; col < 10; col++)
                 {
                     bool boobyTrap = Helper.BoobyTrapped(row, col);
-                    fieldBoard[row, col] = new BoardContent(boobyTrap);
+                    boardfield[row, col] = new BoardContent(boobyTrap);
                 }
             }
-            // Counts nearby mines for each position
+            // Counting nearby mines for each position
             for (int row = 0; row < 10; ++row)
             {
                 for (int col = 0; col < 10; ++col)
@@ -41,54 +44,52 @@ namespace minesweeper
                         {
                             if (r >= 0 && r < 10 && c >= 0 && c < 10)
                             {
-                                if (fieldBoard[r, c].IsMine == true)
+                                if (boardfield[r, c].IsMine == true)
                                 {
-                                    fieldBoard[row, col].IncrementNeighbouringMines();
+                                    boardfield[row, col].IncrementNeighbouringMines();
                                 }
                             }
                         }
                     }
                 }
             }
-
         }
 
-        //==================================
-        // PROPERTYS: GAME OVER & PLAYER WON
-        //==================================
-        public bool PlayerWon =>playerWon; // uppdaterad
+        //====================================
+        // PROPERTIES: GAME OVER & PLAYER WON
+        //====================================
         public bool GameOver => gameOver;
+        public bool PlayerWon => playerWon;
 
         //==========================
         // FLAG A POSITION
         //==========================
         public bool FlagPostion(int row, int col)
         {
-            if (flagcount>=25)
+            if (flagcount>=25 && !boardfield[row, col].IsFlag)
             {
                 Console.WriteLine("Not allowed");
                 return false;
             }
             else
             {
-                return fieldBoard[row, col].TryFlag();
+                return boardfield[row, col].TryFlag();
             }
         }
 
         //=======================
-        //SWEEP A POSITION
+        // SWEEP A POSITION
         //=======================
         public bool SweepPostion(int row, int col)
         {
+            if (boardfield[row, col].IsMine == true && boardfield[row,col].IsFlag !=true ) { gameOver = true; }
 
-            if (fieldBoard[row, col].IsMine == true && fieldBoard[row,col].IsFlag !=true ) { gameOver = true; }
-
-            if (fieldBoard[row, col].NeighbouringMines == 0 && !fieldBoard[row, col].IsSweeped)//FIXAT NOT ALLOWED?
+            if (boardfield[row, col].NeighbouringMines == 0 && !boardfield[row, col].IsSweeped)
             {
                 SweepNearby(row, col);
             }
 
-            else { return fieldBoard[row, col].TrySweep(); }
+            else { return boardfield[row, col].TrySweep(); }
             return true;          
         }
 
@@ -104,52 +105,48 @@ namespace minesweeper
                 {
                     if (r >= 0 && r < 10 && c >= 0 && c < 10)
                     {
-                        if (fieldBoard[r, c].IsSweeped != true && fieldBoard[r,c].IsFlag !=true)///FUNKA
+                        if (boardfield[r, c].IsSweeped != true && boardfield[r,c].IsFlag !=true)
                         { 
-                            fieldBoard[r, c].TrySweep();
+                            boardfield[r, c].TrySweep();
                             
-                            if (fieldBoard[r, c].NeighbouringMines == 0) { SweepNearby(r, c); }
+                            if (boardfield[r, c].NeighbouringMines == 0) { SweepNearby(r, c); }
                         }
-
                     }
                 }
             }
         }
 
-        //=================================
+        //===================================
         // DRAWFIELD: Prints out a 2D array
-        //=================================
+        //===================================
         public void DrawField()
         {
-            if(sweepcount==90){playerWon=true;}// måste vara där
             int countflag=0;
             int countsweep=0;
 
             Console.WriteLine();
-            Console.WriteLine("     A  B  C  D  E  F  G  H  I  J ");
-            Console.WriteLine("   +------------------------------");
+            Console.WriteLine("     A B C D E F G H I J");
+            Console.WriteLine("   +--------------------");
             for (int row = 0; row < 10; row++)
             {
                 Console.Write($" {row} |");
                 for (int col = 0; col < 10; col++)
                 {
-                    if(gameOver== true) {Console.Write(" " + fieldBoard[row, col].GameOver() + " "); }
-
+                    if(gameOver== true) {Console.Write(" " + boardfield[row, col].GameOver() + ""); }
                     else
                     {
-                        Console.Write(" " + fieldBoard[row, col].Symbol + " ");
+                        Console.Write(" " + boardfield[row, col].Symbol + "");
 
-                        //Checks if a position has a flag or is sweeped and counts them
-                        if (fieldBoard[row, col].IsFlag == true) { countflag++; }
-                        if (fieldBoard[row, col].IsSweeped == true) { countsweep++; }
+                        // Counting flags and sweeped positions
+                        if (boardfield[row, col].IsFlag == true) { countflag++; }
+                        if (boardfield[row, col].IsSweeped == true) { countsweep++; }
                     }
                 }
                 Console.WriteLine();
             }
             flagcount=countflag;
             sweepcount=countsweep;
+            if(sweepcount==89){playerWon=true;}
         }
-
-
     }
 }

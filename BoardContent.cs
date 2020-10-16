@@ -2,6 +2,9 @@
 
 namespace minesweeper
 {
+    //==========================================
+    // Constant types for Gameplay and Gameover
+    //==========================================
     enum GameSymbols
     {
         SymbolDefault = 'X',
@@ -16,13 +19,19 @@ namespace minesweeper
         MineFlagged = 'w',
         FlaggedWrong = 'Ⅎ' 
     }
+
     struct BoardContent
     {
+        // FIELDS
         private int neighbouringMines;
         private bool mine;
         private bool flag;
         private bool sweeped;
         private char symbol;
+
+        //==============
+        // CONSTRUCTOR
+        //==============
         public BoardContent(bool boobytrap)
         {
             neighbouringMines = 0;
@@ -31,25 +40,31 @@ namespace minesweeper
             sweeped = false;
             symbol = (char)GameSymbols.SymbolDefault;
         }
-        
+
+        //============
+        // PROPERTIES
+        //============
         public char Symbol => symbol;
         public bool IsSweeped => sweeped;
         public bool IsMine => mine;
         public bool IsFlag => flag;
-
         public int NeighbouringMines
         {
             get {return neighbouringMines;}
             set { neighbouringMines= value;}
         }
 
-        // Öka räknaren av minor på intilliggande rutor med 1.
-        public void IncrementNeighbouringMines() // Stubbe
+        //=============================
+        // CALCULATOR FOR NEARBY MINES
+        //=============================
+        public void IncrementNeighbouringMines()
         {
             neighbouringMines += 1;
         }
 
-        //SKRIVS UT VID GAME OVER
+        //==============================
+        // CHANGES SYMBOLS IF GAME OVER
+        //==============================
         public char GameOver()
         {
             if (flag && mine) { return symbol = (char)GameOverSymbols.MineFlagged; }
@@ -65,22 +80,23 @@ namespace minesweeper
             return symbol = (char)GameSymbols.EmptyNoNearMines;
         }
 
-
-
-        //UPPDATERAD RETURN FALSE 
+        //======================================
+        // TRYFLAG: Adds or removes flag from
+        // postion depending on conditions
+        //======================================
         public bool TryFlag()
         {
             if(flag==true)
             {
-                Console.WriteLine("Removing flag from position");
+                Console.WriteLine("\nRemoving flag from position");
                 symbol = (char)GameSymbols.SymbolDefault;
                 flag=false;
-                return true;  //flag=false;
+                return true;
             }
             else if(sweeped == true)
             {
                 Console.WriteLine("Not allowed");
-                return false;//U
+                return false;
             }
             else
             {
@@ -90,8 +106,10 @@ namespace minesweeper
             }
         } 
 
-        // UPPDATERAD
-
+        //=========================================
+        // TRYSWEEP: checks if sweeping is allowed
+        // Sweepes position if true
+        //=========================================
          public bool TrySweep()
         {
             if (!sweeped && !flag)
@@ -113,8 +131,5 @@ namespace minesweeper
                 return false;
             }
         }
-
-
-
     }
 }
